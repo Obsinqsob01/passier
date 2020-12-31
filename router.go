@@ -15,13 +15,13 @@ type Context struct {
 }
 
 // JSON sends json response
-func (c *Context) JSON(data interface{}) {
+func (c *Context) JSON(data interface{}) error {
 	c.W.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(c.W).Encode(data)
+	return json.NewEncoder(c.W).Encode(data)
 }
 
 // Handle it's type to handle I guess...
-type Handle func(*Context)
+type Handle func(*Context) error
 
 type node struct {
 	children     []*node
