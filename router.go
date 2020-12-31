@@ -84,13 +84,41 @@ type Router struct {
 	rootHandler Handle
 }
 
-// Handle register routes
-func (r *Router) Handle(method, path string, handler Handle) {
-	if path[0] != '/' {
+// VerifyPath verifies that path start is right
+func (r *Router) VerifyPath(path byte) {
+	if path != '/' {
 		panic("Path has to start with a ./")
 	}
+}
 
-	r.tree.addNode(method, path, handler)
+// GET handles routes for get method
+func (r *Router) GET(path string, handler Handle) {
+	r.VerifyPath(path[0])
+	r.tree.addNode(http.MethodGet, path, handler)
+}
+
+// POST handles routes for post method
+func (r *Router) POST(path string, handler Handle) {
+	r.VerifyPath(path[0])
+	r.tree.addNode(http.MethodPost, path, handler)
+}
+
+// PUT handles routes for put method
+func (r *Router) PUT(path string, handler Handle) {
+	r.VerifyPath(path[0])
+	r.tree.addNode(http.MethodPut, path, handler)
+}
+
+// DELETE handles routes for get method
+func (r *Router) DELETE(path string, handler Handle) {
+	r.VerifyPath(path[0])
+	r.tree.addNode(http.MethodDelete, path, handler)
+}
+
+// PATCH handles routes for get method
+func (r *Router) PATCH(path string, handler Handle) {
+	r.VerifyPath(path[0])
+	r.tree.addNode(http.MethodPatch, path, handler)
 }
 
 func (r *Router) handleContext(w http.ResponseWriter, req *http.Request, values url.Values) *Context {
