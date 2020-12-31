@@ -1,6 +1,7 @@
 package passier
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/url"
 	"strings"
@@ -11,6 +12,12 @@ type Context struct {
 	W      http.ResponseWriter
 	R      *http.Request
 	Params url.Values
+}
+
+// JSON sends json response
+func (c *Context) JSON(data interface{}) {
+	c.W.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(c.W).Encode(data)
 }
 
 // Handle it's type to handle I guess...
